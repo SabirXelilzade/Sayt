@@ -2,17 +2,20 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş - nexus.com</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #0d1117;
             background-image: radial-gradient(circle at 50% 30%, #1a2332 0%, #0d1117 70%);
             color: #c9d1d9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
             margin: 0;
         }
         .auth-card {
@@ -20,17 +23,11 @@
             backdrop-filter: blur(10px);
             padding: 40px 30px;
             border-radius: 16px;
-            width: 380px;
+            width: 100%;
+            max-width: 400px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             border: 1px solid #21262d;
             text-align: center;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
         }
         .logo-icon {
             width: 32px;
@@ -43,54 +40,33 @@
             font-weight: bold;
             color: white;
         }
-        .logo-text {
-            font-size: 22px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        h2 {
-            margin: 10px 0 5px 0;
-            color: #ffffff;
-            font-size: 20px;
-        }
-        p {
-            color: #8b949e;
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px 12px 40px;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: #fff;
+        .form-control {
+            background: #0d1117 !important;
+            border: 1px solid #30363d !important;
+            color: #fff !important;
+            padding: 12px 15px 12px 45px;
             border-radius: 8px;
-            box-sizing: border-box;
             font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
         }
-        .input-group input:focus {
-            border-color: #ff7e5f;
+        .form-control:focus {
+            border-color: #ff7e5f !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 126, 95, 0.25) !important;
         }
-        .input-group span {
+        .input-group-text {
+            background: transparent;
+            border: none;
             position: absolute;
-            left: 15px;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
+            z-index: 10;
             color: #8b949e;
         }
         .forgot-pass {
-            display: block;
             text-align: left;
             color: #58a6ff;
             font-size: 12px;
             text-decoration: none;
-            margin-bottom: 20px;
         }
         .forgot-pass:hover {
             text-decoration: underline;
@@ -103,13 +79,12 @@
             color: #fff;
             font-weight: bold;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 15px;
             transition: opacity 0.2s;
-            margin-bottom: 15px;
         }
         .btn-login:hover {
             opacity: 0.9;
+            color: #fff;
         }
         .btn-register {
             display: block;
@@ -121,9 +96,7 @@
             font-weight: bold;
             border-radius: 8px;
             text-decoration: none;
-            box-sizing: border-box;
             font-size: 15px;
-            margin-bottom: 20px;
             transition: background 0.2s;
         }
         .btn-register:hover {
@@ -133,7 +106,6 @@
         .divider {
             color: #484f58;
             font-size: 12px;
-            margin-bottom: 20px;
             position: relative;
         }
         .google-btn {
@@ -144,50 +116,60 @@
             color: #fff;
             border-radius: 8px;
             font-size: 14px;
-            cursor: pointer;
+            text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            text-decoration: none;
         }
         .google-btn:hover {
             background: #21262d;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <div class="logo-area">
-            <div class="logo-icon">⚡</div>
-            <div class="logo-text">nexus<span style="color: #ff7e5f;">.com</span></div>
-        </div>
-        <h2>Xoş gəlmisiniz!</h2>
-        <p>Sayta daxil olun və dostlarınızla əylənməyə başlayın!</p>
-        
-        <form method="POST">
-            <div class="input-group">
-                <span>👤</span>
-                <input type="email" name="email" placeholder="E-poçt ünvanı" required>
-            </div>
-            
-            <div class="input-group">
-                <span>🔒</span>
-                <input type="password" name="password" placeholder="Parol" required>
-            </div>
-            
-           <a href="{{ url_for('forgot_password') }}" class="forgot-pass">Parolu unutmusunuz?</a>
-            
-            <button type="submit" class="btn-login">Giriş →</button>
-        </form>
 
-        <a href="{{ url_for('register') }}" class="btn-register">Qeydiyyatdan keçin</a>
-        
-        <div class="divider">və ya</div>
-        
-        <a href="#" class="google-btn">
-            <span>🌐</span> Google ilə hesabınıza giriş edin
-        </a>
+    <div class="container d-flex justify-content-center align-items: center px-3">
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="d-flex align-items: center justify-content-center gap-2 mb-3">
+                <div class="logo-icon">⚡</div>
+                <div class="fs-4 fw-bold text-white">nexus<span style="color: #ff7e5f;">.com</span></div>
+            </div>
+            
+            <h2 class="text-white fs-5 mb-1">Xoş gəlmisiniz!</h2>
+            <p class="text-muted small mb-4">Sayta daxil olun və dostlarınızla əylənməyə başlayın!</p>
+            
+            <form method="POST">
+                <div class="position-relative mb-3">
+                    <span class="input-group-text">👤</span>
+                    <input type="email" name="email" class="form-control" placeholder="E-poçt ünvanı" required>
+                </div>
+                
+                <div class="position-relative mb-2">
+                    <span class="input-group-text">🔒</span>
+                    <input type="password" name="password" class="form-control" placeholder="Parol" required>
+                </div>
+                
+                <div class="d-flex justify-content-start mb-3">
+                    <a href="{{ url_for('forgot_password') }}" class="forgot-pass">Parolu unutmusunuz?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-login mb-3">Giriş →</button>
+            </form>
+
+            <a href="{{ url_for('register') }}" class="btn btn-register mb-3">Qeydiyyatdan keçin</a>
+            
+            <div class="divider mb-3">və ya</div>
+            
+            <a href="#" class="google-btn">
+                <span>🌐</span> Google ilə hesabınıza giriş edin
+            </a>
+        </div>
     </div>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
