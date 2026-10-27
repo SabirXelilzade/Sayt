@@ -123,5 +123,14 @@ def add_post():
         db.session.commit()
     return redirect(url_for('index'))
 
+# --- ADMIN PANELİ ---
+@app.route('/admin')
+@login_required
+def admin():
+    # İstəsəniz buraya yalnız öz e-poçtunuz üçün yoxlama qoya bilərsiniz, 
+    # məsələn: if current_user.email == 'sizin_email@mail.com':
+    users = User.query.all()
+    return render_template('admin.html', users=users)
+
 if __name__ == '__main__':
     app.run(debug=True)
