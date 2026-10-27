@@ -171,17 +171,18 @@ def forgot_password():
     if request.method == 'POST':
         user_email = request.form.get('email')
         
-        msg = Message('Nexus - Şifrə Sıfırlama Sorğusu', recipients=[user_email])
-        msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun:\nhttp://127.0.0.1:5000/reset-password\n\nƏgər bu sorğunu siz etməmisinizsə, mesajı nəzərə almayın."
-        
         try:
+            # E-poçt mesajının hazırlanması
+            msg = Message('Nexus - Şifrə sıfırlama sorğusu', recipients=[user_email])
+            msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun:\n{request.host_url}reset-password"
+            
             mail.send(msg)
             flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi!', 'success')
         except Exception as e:
             flash(f'E-poçt göndərilərkən xəta baş verdi: {e}', 'danger')
-            
-        return redirect(url_for('forgot_password'))
         
+        return redirect(url_for('forgot_password'))
+    
     return render_template('forgot_password.html')
 
 if __name__ == '__main__':
