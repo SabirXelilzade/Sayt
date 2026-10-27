@@ -127,8 +127,8 @@ def add_post():
 @app.route('/admin')
 @login_required
 def admin():
-    if current_user.username != 'admin':
-        return "<h1>Sən admin deyilsən!</h1><p>Bu səhifəyə daxil olmaq üçün admin hüquqlarınız yoxdur.</p>", 403
+    if current_user.username != 'sabir':
+        return "<h1>Sən sabir deyilsən!</h1><p>Bu səhifəyə daxil olmaq üçün admin hüquqlarınız yoxdur.</p>", 403
     
     users = User.query.all()
     return render_template('admin.html', users=users)
