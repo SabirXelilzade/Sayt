@@ -41,7 +41,7 @@ def send_reset_email(user_email, reset_url):
             print(f"XƏTA (Resend): {response.text}", flush=True)
     except Exception as e:
         print(f"XƏTA BAŞ VERDİ: {e}", flush=True)
-        
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -210,22 +210,18 @@ def forgot_password():
     if request.method == 'POST':
         user_email = request.form.get('email')
         
-        try:
+      try:
             token = s.dumps(user_email, salt='password-reset-salt')
             reset_url = url_for('reset_password', token=token, _external=True)
             
-            msg = Message('Nexus - Şifrə sıfırlama sorğusu', recipients=[user_email])
-            msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun (Keçid 1 saat ərzində etibarlıdır):\n\n{reset_url}"
+            # Yeni Resend funksiyası vasitəsilə e-poçt göndərilməsi
+            send_reset_email(user_email, reset_url)
             
-            # E-poçt arxa planda göndərilir, server heç vaxt donmur!
-            Thread(target=send_async_email, args=(app, msg)).start()
-            
-            flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi!', 'success')
+            flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi', 'success')
         except Exception as e:
             flash(f'Xəta baş verdi: {e}', 'danger')
-        
+            
         return redirect(url_for('forgot_password'))
-    
     return render_template('forgot_password.html')
 
 @app.route('/reset-password/<token>', methods=['GET', 'POST'])
