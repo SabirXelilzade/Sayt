@@ -166,24 +166,53 @@ def admin():
     users = User.query.all()
     return render_template('admin.html', users=users)
 
+from itsdangerous import URLSafeTimedSerializer as Serializer
+
+# Serializer obyektini app-in yuxarı hissəsində təyin et (məsələn, app.config['SECRET_KEY'] altında)
+s = Serializer(app.config['SECRET_KEY'])
+
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         user_email = request.form.get('email')
         
         try:
-            # E-poçt mesajının hazırlanması
+            # İstifadəçi üçün təhlükəsiz 1 saatlıq token yaradırıq
+            token = s.dumps(user_email, salt='password-reset-salt')
+            reset_url = url_for('reset_password', token=token, _external=True)
+            
             msg = Message('Nexus - Şifrə sıfırlama sorğusu', recipients=[user_email])
-            msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun:\n{request.host_url}reset-password"
+            msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun (Keçid 1 saat ərzində etibarlıdır):\n\n{reset_url}"
             
             mail.send(msg)
             flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi!', 'success')
         except Exception as e:
-            flash(f'E-poçt göndərilərkən xəta baş verdi: {e}', 'danger')
+            flash(f'E-poçt göndərilerken xəta baş verdi: {e}', 'danger')
         
         return redirect(url_for('forgot_password'))
     
     return render_template('forgot_password.html')
 
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    try:
+        # Tokenin etibarlılığını yoxlayırıq (1 saat = 3650 saniyə və ya istədiyin vaxt)
+        email = s.loads(token, salt='password-reset-salt', max_age=3600)
+    except Exception:
+        flash('Sıfırlama linki etibarsızdır və ya vaxtı bitib.', 'danger')
+        return redirect(url_for('forgot_password'))
+        
+    if request.method == 'POST':
+        new_password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            # Şifrəni yeniləyirik (Əgər hash işlədirsənsə generate_password_hash istifadə et)
+            user.password = new_password  # Və ya hash funksiyan necədirsə
+            db.session.commit()
+            flash('Şifrəniz uğurla yeniləndi! İndi daxil ola bilərsiniz.', 'success')
+            return redirect(url_for('login'))
+            
+    return render_template('reset_password.html')
 if __name__ == '__main__':
     app.run(debug=True)
