@@ -178,8 +178,9 @@ def send_async_email(app_instance, msg):
     with app_instance.app_context():
         try:
             mail.send(msg)
+            print("E-poçt uğurla göndərildi!")
         except Exception as e:
-            print(f"Arxa planda e-poçt göndərmə xətası: {e}")
+            print(f"XƏTA BAŞ VERDİ (E-poçt göndərilmədi): {e}")
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
