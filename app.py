@@ -210,7 +210,7 @@ def forgot_password():
     if request.method == 'POST':
         user_email = request.form.get('email')
         
-      try:
+        try:
             token = s.dumps(user_email, salt='password-reset-salt')
             reset_url = url_for('reset_password', token=token, _external=True)
             
@@ -222,6 +222,7 @@ def forgot_password():
             flash(f'Xəta baş verdi: {e}', 'danger')
             
         return redirect(url_for('forgot_password'))
+        
     return render_template('forgot_password.html')
 
 @app.route('/reset-password/<token>', methods=['GET', 'POST'])
