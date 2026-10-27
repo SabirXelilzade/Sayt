@@ -6,19 +6,42 @@ import requests
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import Response
 from threading import Thread
-from flask_mail import Mail, Message
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'azerbaycan_nexus_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nexus.db'
-# Flask-Mail Konfiqurasiyası
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'sabirxelilzade0089@gmail.com'
-app.config['MAIL_PASSWORD'] = 'zkcqmkqrwqnpayyn'
-app.config['MAIL_DEFAULT_SENDER'] = ('Nexus Support', 'sabirxelilzade0089@gmail.com')
 
-mail = Mail(app)
+import os
+import requests
+
+def send_reset_email(user_email, reset_url):
+    resend_api_key = os.environ.get("RESEND_API_KEY")
+    
+    # Resend API vasitəsilə e-poçt göndərilməsi
+    headers = {
+        "Authorization": f"Bearer {resend_api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "from": "onboarding@resend.dev",
+        "to": [user_email],
+        "subject": "Şifrənin Bərpası - Sayt",
+        "html": f"""
+            <p>Şifrənizi bərpa etmək üçün aşağıdakı linkə klikləyin:</p>
+            <p><a href="{reset_url}">Şifrəni bərpa et</a></p>
+            <p>Əgər bu sorğunu siz etməmisinizsə, bu mesajı nəzərə almaya bilərsiniz.</p>
+        """
+    }
+    
+    try:
+        response = requests.post("https://api.resend.com/emails", json=data, headers=headers)
+        if response.status_code == 200:
+            print("E-poçt Resend vasitəsilə uğurla göndərildi!", flush=True)
+        else:
+            print(f"XƏTA (Resend): {response.text}", flush=True)
+    except Exception as e:
+        print(f"XƏTA BAŞ VERDİ: {e}", flush=True)
+        
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
