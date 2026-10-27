@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 import requests
+from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import Response
+from threading import Thread
 from flask_mail import Mail, Message
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'azerbaycan_nexus_secret_key'
@@ -166,10 +168,18 @@ def admin():
     users = User.query.all()
     return render_template('admin.html', users=users)
 
-from itsdangerous import URLSafeTimedSerializer as Serializer
-
 # Serializer obyektini app-in yuxarı hissəsində təyin et (məsələn, app.config['SECRET_KEY'] altında)
 s = Serializer(app.config['SECRET_KEY'])
+
+from threading import Thread
+
+# Arxa planda e-poçt göndərən köməkçi funksiya
+def send_async_email(app_instance, msg):
+    with app_instance.app_context():
+        try:
+            mail.send(msg)
+        except Exception as e:
+            print(f"Arxa planda e-poçt göndərmə xətası: {e}")
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
@@ -177,17 +187,18 @@ def forgot_password():
         user_email = request.form.get('email')
         
         try:
-            # İstifadəçi üçün təhlükəsiz 1 saatlıq token yaradırıq
             token = s.dumps(user_email, salt='password-reset-salt')
             reset_url = url_for('reset_password', token=token, _external=True)
             
             msg = Message('Nexus - Şifrə sıfırlama sorğusu', recipients=[user_email])
             msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun (Keçid 1 saat ərzində etibarlıdır):\n\n{reset_url}"
             
-            mail.send(msg)
+            # E-poçt arxa planda göndərilir, server heç vaxt donmur!
+            Thread(target=send_async_email, args=(app, msg)).start()
+            
             flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi!', 'success')
         except Exception as e:
-            flash(f'E-poçt göndərilerken xəta baş verdi: {e}', 'danger')
+            flash(f'Xəta baş verdi: {e}', 'danger')
         
         return redirect(url_for('forgot_password'))
     
