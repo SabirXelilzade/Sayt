@@ -4,11 +4,19 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_bcrypt import Bcrypt
 import requests
 from flask import Response
-
+from flask_mail import Mail, Message
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'azerbaycan_nexus_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nexus.db'
+# Flask-Mail Konfiqurasiyası
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'sabirxelilzade0089@gmail.com'
+app.config['MAIL_PASSWORD'] = 'zkcqmkqrwqnpayyn'
+app.config['MAIL_DEFAULT_SENDER'] = ('Nexus Support', 'sabirxelilzade0089@gmail.com')
 
+mail = Mail(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -157,6 +165,24 @@ def admin():
     
     users = User.query.all()
     return render_template('admin.html', users=users)
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        user_email = request.form.get('email')
+        
+        msg = Message('Nexus - Şifrə Sıfırlama Sorğusu', recipients=[user_email])
+        msg.body = f"Salam,\n\nNexus hesabınızın şifrəsini bərpa etmək üçün aşağıdakı keçidə daxil olun:\nhttp://127.0.0.1:5000/reset-password\n\nƏgər bu sorğunu siz etməmisinizsə, mesajı nəzərə almayın."
+        
+        try:
+            mail.send(msg)
+            flash('Şifrə bərpa keçidi e-poçt ünvanınıza göndərildi!', 'success')
+        except Exception as e:
+            flash(f'E-poçt göndərilərkən xəta baş verdi: {e}', 'danger')
+            
+        return redirect(url_for('forgot_password'))
+        
+    return render_template('forgot_password.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
