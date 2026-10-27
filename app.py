@@ -46,12 +46,37 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
-        user = User(username=request.form['username'], email=request.form['email'], password=hashed_password)
-        db.session.add(user)
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        # Yalnız @gmail.com ünvanı ilə qeydiyyat yoxlaması
+        if not email.endswith('@gmail.com'):
+            flash('Yalnız @gmail.com ünvanı ilə qeydiyyatdan keçə bilərsiniz!')
+            return redirect(url_for('register'))
+            
+        # İstifadəçi adı və ya e-poçt bazada artıq mövcuddursa yoxlayaq
+        user_by_username = User.query.filter_by(username=username).first()
+        user_by_email = User.query.filter_by(email=email).first()
+        
+        if user_by_username:
+            flash('Bu istifadəçi adı artıq istifadə olunur!')
+            return redirect(url_for('register'))
+            
+        if user_by_email:
+            flash('Bu Gmail ünvanı ilə artıq bir hesab yaradılıb!')
+            return redirect(url_for('register'))
+            
+        # Şifrəni şifrələyib bazaya əlavə edirik
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(username=username, email=email, password=hashed_password)
+        
+        db.session.add(new_user)
         db.session.commit()
+        
         flash('Qeydiyyat uğurla tamamlandı! İndi daxil ola bilərsiniz.', 'success')
         return redirect(url_for('login'))
+        
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
