@@ -11,14 +11,25 @@
         button { width: 100%; padding: 10px; background: #00d26a; border: none; color: #fff; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         button:hover { background: #00b058; }
         a { color: #58a6ff; text-decoration: none; display: block; text-align: center; margin-top: 15px; }
+        .alert { background: #f85149; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="auth-card">
         <h2>nexus.com - Qeydiyyat</h2>
+        
+        <!-- Flash xəbərlərini burada göstəririk -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <form method="POST">
             <input type="text" name="username" placeholder="İstifadəçi adı" required>
-            <input type="email" name="email" placeholder="E-poçt ünvanı" required>
+            <input type="email" name="email" placeholder="E-poçt ünvanı (@gmail.com)" required>
             <input type="password" name="password" placeholder="Şifrə" required>
             <button type="submit">Qeydiyyatdan keç</button>
         </form>
