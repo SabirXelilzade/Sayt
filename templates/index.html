@@ -1,181 +1,212 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="az" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nexus - Ana Səhifə</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
         body {
             background-color: #0d1117;
             color: #c9d1d9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
         }
-        .main-container {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .sidebar-left {
-            width: 260px;
-            background: #161b22;
-            border-right: 1px solid #30363d;
-            padding: 25px 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
+
+        /* Qradient Loqo və Düymələr */
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: #ffffff;
-            margin-bottom: 20px;
+            text-decoration: none;
         }
-        .logo span {
+        .brand-logo span {
             color: #ff7e5f;
         }
-        .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #ff7e5f, #ff5e36);
+            color: #ffffff;
+            border: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
         }
-        .menu-list a {
-            display: block;
-            padding: 12px 15px;
+        .btn-gradient:hover {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        /* Navigasiya keçidləri */
+        .sidebar .nav-link {
             color: #8b949e;
-            text-decoration: none;
+            padding: 0.6rem 1rem;
             border-radius: 8px;
-            font-size: 15px;
-            transition: 0.2s;
+            font-size: 0.95rem;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .menu-list a:hover, .menu-list a.active {
-            background: #21262d;
+        .sidebar .nav-link:hover, 
+        .sidebar .nav-link.active {
+            background-color: #21262d;
             color: #ffffff;
         }
+
+        /* Çıxış linki */
         .logout-link {
             color: #ff4d4d !important;
         }
         .logout-link:hover {
-            background: rgba(255, 77, 77, 0.1) !important;
+            background-color: rgba(255, 77, 77, 0.1) !important;
         }
-        .content-area {
-            flex-grow: 1;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow-y: auto;
+
+        /* Kartlar və Form Elementləri */
+        .custom-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+        }
+
+        .custom-textarea {
             background-color: #0d1117;
-        }
-        .post-box {
-            background: #161b22;
             border: 1px solid #30363d;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            max-width: 700px;
-        }
-        .post-box textarea {
-            width: 100%;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
+            color: #ffffff;
             resize: none;
-            height: 80px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            outline: none;
-            font-size: 14px;
         }
-        .post-box textarea:focus {
+        .custom-textarea:focus {
+            background-color: #0d1117;
             border-color: #ff7e5f;
+            box-shadow: 0 0 0 0.25rem rgba(255, 126, 95, 0.25);
+            color: #ffffff;
         }
-        .post-btn {
-            background: linear-gradient(135deg, #ff7e5f, #ff5e36);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .post-btn:hover {
-            opacity: 0.9;
-        }
-        .post-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            max-width: 700px;
-        }
-        .post-card strong {
-            color: #58a6ff;
-        }
-        .post-card p {
-            margin: 10px 0 0 0;
-            color: #c9d1d9;
+
+        /* Masaüstü və Mobil Konfiqurasiyaları */
+        @media (min-width: 992px) {
+            .sidebar-desktop {
+                width: 260px;
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                left: 0;
+                border-right: 1px solid #30363d;
+                background-color: #161b22;
+                z-index: 1000;
+            }
+            .main-content {
+                margin-left: 260px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <!-- SOL MENYU -->
-        <aside class="sidebar-left">
-            <div>
-                <div class="logo">nexus<span>.com</span></div>
-                <ul class="menu-list">
-                    <li><a href="{{ url_for('index') }}" class="active">Ana səhifə</a></li>
-                    <li><a href="{{ url_for('maraqli') }}">Maraqlı</a></li>
-                    <li><a href="{{ url_for('profile') }}">Profil</a></li>
-                    <li><a href="{{ url_for('dostlar') }}">Dostlar</a></li>
-                    <li><a href="{{ url_for('messages') }}">Mesajlar</a></li>
-                    <li><a href="{{ url_for('bildirisler') }}">Bildirişlər</a></li>
-                    <li><a href="{{ url_for('games') }}">Oyunlar</a></li>
-                    <li><a href="{{ url_for('ayarlar') }}">Ayarlar</a></li>
-                </ul>
-            </div>
-            <div>
-                <ul class="menu-list">
-                    <li><a href="{{ url_for('logout') }}" class="logout-link">Çıxış</a></li>
-                </ul>
-            </div>
-        </aside>
+    <!-- MOBİL ÜÇÜN YUXARI NAVBAR (Yalnız kiçik ekranlarda görünür) -->
+    <nav class="navbar navbar-dark bg-dark d-lg-none border-bottom border-secondary px-3 sticky-top" style="background-color: #161b22 !important;">
+        <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
 
-        <!-- ƏSAS MƏZMUN -->
-        <main class="content-area">
-            <h2>Xoş gəlmisiniz, {{ current_user.username }}!</h2>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
 
-            <!-- Post Paylaşma Formu -->
-            <div class="post-box">
-                <form action="{{ url_for('add_post') }}" method="POST">
-                    <textarea name="content" placeholder="Nə düşünürsünüz?" required></textarea>
-                    <button type="submit" class="post-btn">Paylaş</button>
-                </form>
-            </div>
-
-            <!-- Paylaşılan Postlar -->
-            <div class="posts-feed">
-                {% for post in posts %}
-                    <div class="post-card">
-                        <strong>{{ post.author.username }}</strong>
-                        <p>{{ post.content }}</p>
+            <!-- MASAÜSTÜ ÜÇÜN SOL MENYU (DESKTOP SIDEBAR) -->
+            <aside class="sidebar sidebar-desktop d-none d-lg-flex flex-column justify-content-between p-3">
+                <div>
+                    <div class="mb-4 ps-2">
+                        <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
                     </div>
-                {% else %}
-                    <p style="color: #8b949e;">Hələ heç bir post paylaşılmayıb. İlk paylaşımı siz edin!</p>
-                {% endfor %}
+                    <nav class="nav nav-pills flex-column gap-1">
+                        <a href="{{ url_for('index') }}" class="nav-link active"><i class="bi bi-house-door"></i> Ana səhifə</a>
+                        <a href="{{ url_for('maraqli') }}" class="nav-link"><i class="bi bi-compass"></i> Maraqlı</a>
+                        <a href="{{ url_for('profile') }}" class="nav-link"><i class="bi bi-person"></i> Profil</a>
+                        <a href="{{ url_for('dostlar') }}" class="nav-link"><i class="bi bi-people"></i> Dostlar</a>
+                        <a href="{{ url_for('messages') }}" class="nav-link"><i class="bi bi-chat-dots"></i> Mesajlar</a>
+                        <a href="{{ url_for('bildirisler') }}" class="nav-link"><i class="bi bi-bell"></i> Bildirişlər</a>
+                        <a href="{{ url_for('games') }}" class="nav-link"><i class="bi bi-controller"></i> Oyunlar</a>
+                        <a href="{{ url_for('ayarlar') }}" class="nav-link"><i class="bi bi-gear"></i> Ayarlar</a>
+                    </nav>
+                </div>
+                <div>
+                    <nav class="nav nav-pills flex-column">
+                        <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i> Çıxış</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- MOBİL ÜÇÜN AÇILAN MENYU (OFFCANVAS SIDEBAR) -->
+            <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileSidebar" style="background-color: #161b22 !important;">
+                <div class="offcanvas-header border-bottom border-secondary">
+                    <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Bağla"></button>
+                </div>
+                <div class="offcanvas-body d-flex flex-column justify-content-between sidebar">
+                    <nav class="nav nav-pills flex-column gap-1">
+                        <a href="{{ url_for('index') }}" class="nav-link active"><i class="bi bi-house-door"></i> Ana səhifə</a>
+                        <a href="{{ url_for('maraqli') }}" class="nav-link"><i class="bi bi-compass"></i> Maraqlı</a>
+                        <a href="{{ url_for('profile') }}" class="nav-link"><i class="bi bi-person"></i> Profil</a>
+                        <a href="{{ url_for('dostlar') }}" class="nav-link"><i class="bi bi-people"></i> Dostlar</a>
+                        <a href="{{ url_for('messages') }}" class="nav-link"><i class="bi bi-chat-dots"></i> Mesajlar</a>
+                        <a href="{{ url_for('bildirisler') }}" class="nav-link"><i class="bi bi-bell"></i> Bildirişlər</a>
+                        <a href="{{ url_for('games') }}" class="nav-link"><i class="bi bi-controller"></i> Oyunlar</a>
+                        <a href="{{ url_for('ayarlar') }}" class="nav-link"><i class="bi bi-gear"></i> Ayarlar</a>
+                    </nav>
+                    <div class="mt-4">
+                        <nav class="nav nav-pills flex-column">
+                            <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i> Çıxış</a>
+                        </nav>
+                    </div>
+                </div>
             </div>
-        </main>
+
+            <!-- ƏSAS MƏZMUN SAHƏSİ (MAIN CONTENT) -->
+            <main class="main-content col-12 col-lg p-3 p-md-4 p-xl-5">
+                <div class="col-12 col-xl-8 mx-auto" style="max-width: 750px;">
+                    
+                    <!-- Xoş gəlmisiniz Başlığı -->
+                    <h2 class="h4 font-weight-bold mb-4">Xoş gəlmisiniz, {{ current_user.username }}!</h2>
+
+                    <!-- Post Paylaşma Formu -->
+                    <div class="card custom-card p-3 mb-4">
+                        <form action="{{ url_for('add_post') }}" method="POST">
+                            <div class="mb-3">
+                                <textarea name="content" class="form-control custom-textarea" rows="3" placeholder="Nə düşünürsünüz?" required></textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-gradient px-4">Paylaş</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Paylaşılan Postlar Lenti -->
+                    <div class="posts-feed">
+                        {% for post in posts %}
+                            <div class="card custom-card p-3 mb-3">
+                                <div class="card-body p-0">
+                                    <h6 class="card-title fw-bold mb-2" style="color: #58a6ff;">{{ post.author.username }}</h6>
+                                    <p class="card-text mb-0" style="color: #c9d1d9;">{{ post.content }}</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="p-3 text-center text-secondary border border-secondary border-dashed rounded-3" style="border-style: dashed !important;">
+                                Hələ heç bir post paylaşılmayıb. İlk paylaşımı siz edin!
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
     </div>
 
+    <!-- Bootstrap 5 JS Bundle (Popper daxil) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
