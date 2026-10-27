@@ -1,0 +1,217 @@
+/* Ümumi sıfırlama və qaranlıq fon */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #0b141a; /* Tünd yaşıl-qara fon */
+    color: #e4e6eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Əsas 3 sütunlu Grid Konteyner */
+.main-container {
+    display: grid;
+    grid-template-columns: 260px 1fr 300px;
+    width: 100%;
+    max-width: 1400px;
+    height: 100vh;
+    background-color: #0b141a;
+}
+
+/* Sol Menyu */
+.sidebar-left {
+    background-color: #111b21;
+    padding: 20px;
+    border-right: 1px solid #222d34;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00a884;
+    margin-bottom: 20px;
+}
+
+.logo span {
+    color: #ffffff;
+}
+
+.menu-list {
+    list-style: none;
+    overflow-y: auto;
+}
+
+.menu-list li {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.menu-list li:hover, .menu-list li a.active {
+    background-color: #222d34;
+}
+
+.menu-list li a {
+    color: #8696a0;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+}
+
+.menu-list li:hover a, .menu-list li a.active {
+    color: #00a884;
+}
+
+.share-btn {
+    background-color: #00a884;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Mərkəzi Hissə (Lenta) */
+.feed-content {
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #0b141a;
+}
+
+.search-bar-container input {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #111b21;
+    border: 1px solid #222d34;
+    border-radius: 20px;
+    color: white;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.games-section, .stories-section, .post-box {
+    background-color: #111b21;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #222d34;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.section-header a {
+    color: #00a884;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.game-card {
+    background: linear-gradient(135deg, #2c3e50, #00a884);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.stories-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.story-item {
+    min-width: 70px;
+    height: 100px;
+    background-color: #222d34;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.create-story {
+    background-color: #00a884;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.post-box input {
+    width: 100%;
+    padding: 10px;
+    background-color: #222d34;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.post-actions button {
+    background-color: #222d34;
+    color: #8696a0;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Sağ Panel (Onlayn İstifadəçilər) */
+.sidebar-right {
+    background-color: #111b21;
+    padding: 20px;
+    border-left: 1px solid #222d34;
+    overflow-y: auto;
+}
+
+.online-users-header h3 {
+    font-size: 15px;
+    color: #00a884;
+    margin-bottom: 15px;
+}
+
+.online-list {
+    list-style: none;
+}
+
+.online-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #e4e6eb;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #00a884;
+    border-radius: 50%;
+}

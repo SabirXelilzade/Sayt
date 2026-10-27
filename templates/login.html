@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş - Azevip.com</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            background-image: radial-gradient(circle at 50% 30%, #1a2332 0%, #0d1117 70%);
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .auth-card {
+            background: rgba(16, 22, 34, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 16px;
+            width: 380px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid #21262d;
+            text-align: center;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        .logo-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        h2 {
+            margin: 10px 0 5px 0;
+            color: #ffffff;
+            font-size: 20px;
+        }
+        p {
+            color: #8b949e;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #ff7e5f;
+        }
+        .input-group span {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8b949e;
+        }
+        .forgot-pass {
+            display: block;
+            text-align: left;
+            color: #58a6ff;
+            font-size: 12px;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff7e5f, #ff5e36);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: opacity 0.2s;
+            margin-bottom: 15px;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+        .btn-register {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            box-sizing: border-box;
+            font-size: 15px;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .btn-register:hover {
+            background: #21262d;
+            color: #fff;
+        }
+        .divider {
+            color: #484f58;
+            font-size: 12px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .google-btn {
+            width: 100%;
+            padding: 12px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .google-btn:hover {
+            background: #21262d;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="logo-area">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">azevip<span style="color: #ff7e5f;">.com</span></div>
+        </div>
+        <h2>Xoş gəlmisiniz!</h2>
+        <p>Sayta daxil olun və dostlarınızla əylənməyə başlayın!</p>
+        
+        <form method="POST">
+            <div class="input-group">
+                <span>👤</span>
+                <input type="email" name="email" placeholder="E-poçt ünvanı" required>
+            </div>
+            
+            <div class="input-group">
+                <span>🔒</span>
+                <input type="password" name="password" placeholder="Parol" required>
+            </div>
+            
+            <a href="#" class="forgot-pass">Parolu unutmusunuz?</a>
+            
+            <button type="submit" class="btn-login">Giriş →</button>
+        </form>
+
+        <a href="{{ url_for('register') }}" class="btn-register">Qeydiyyatdan keçin</a>
+        
+        <div class="divider">və ya</div>
+        
+        <a href="#" class="google-btn">
+            <span>🌐</span> Google ilə hesabınıza giriş edin
+        </a>
+    </div>
+</body>
+</html>

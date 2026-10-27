@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Azevip.com{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <!-- SOL MENYU -->
+        <aside class="sidebar-left">
+            <div class="logo">Azevip<span>.com</span></div>
+            <ul class="menu-list">
+                <li><a href="{{ url_for('index') }}">Ana səhifə</a></li>
+                <li><a href="{{ url_for('maraqli') }}">Maraqlı</a></li>
+                <li><a href="{{ url_for('profile') }}">Profil</a></li>
+                <li><a href="{{ url_for('dostlar') }}">Dostlar</a></li>
+                <li><a href="{{ url_for('messages') }}">Mesajlar</a></li>
+                <li><a href="{{ url_for('bildirisler') }}">Bildirişlər</a></li>
+                <li><a href="{{ url_for('games') }}">Oyunlar</a></li>
+                <li><a href="{{ url_for('ayarlar') }}">Ayarlar</a></li>
+                <li><a href="{{ url_for('logout') }}" style="color: #ff4d4d;">Çıxış</a></li>
+            </ul>
+        </aside>
+
+        <!-- ƏSAS MƏZMUN HİSSƏSİ -->
+        <main class="content-area">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

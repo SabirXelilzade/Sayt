@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azevip - Oyunlar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sol Menyu -->
+        <aside class="sidebar-left">
+            <div class="logo">Azevip<span>.com</span></div>
+            <ul class="menu-list">
+                <li><a href="{{ url_for('index') }}">Ana səhifə</a></li>
+                <li><a href="{{ url_for('maraqli') }}">Maraqlı</a></li>
+                <li><a href="{{ url_for('profile') }}">Profil</a></li>
+                <li><a href="{{ url_for('dostlar') }}">Dostlar</a></li>
+                <li><a href="{{ url_for('messages') }}">Mesajlar</a></li>
+                <li><a href="{{ url_for('bildirisler') }}">Bildirişlər</a></li>
+                <li><a href="{{ url_for('games') }}" class="active">Oyunlar</a></li>
+                <li><a href="{{ url_for('ayarlar') }}">Ayarlar</a></li>
+                <li><a href="{{ url_for('cixis') }}">Çıxış</a></li>
+            </ul>
+            <button class="share-btn">+ Paylaş</button>
+        </aside>
+
+        <!-- Mərkəzi Hissə -->
+        <main class="feed-content">
+            <div class="search-bar-container">
+                <input type="text" placeholder="İnsan, post, qrup axtar...">
+            </div>
+            
+            <section class="games-section">
+                <div class="section-header">
+                    <h3>Bütün Oyunlar</h3>
+                </div>
+                <a href="{{ url_for('butulka') }}" style="text-decoration: none;">
+        <div class="game-card" style="margin-bottom: 15px; cursor: pointer;">
+            <div class="game-info">
+                <h4 style="color: white;">Butulka Oyunu</h4>
+                <p>Tanışlıq və əyləncə oyunu — Oyna 🍾</p>
+            </div>
+        </div>
+    </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sağ Panel -->
+        <aside class="sidebar-right">
+            <div class="online-users-header">
+                <h3>Oyunçular</h3>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

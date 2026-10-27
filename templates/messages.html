@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Azevip - Ayarlar{% endblock %}
+
+{% block content %}
+        <!-- Mərkəzi Hissə - Mesajlar Paneli -->
+        <main class="feed-content">
+            <div class="search-bar-container">
+                <input type="text" placeholder="İnsan, post, qrup axtar...">
+            </div>
+            <div style="background-color: #111b21; padding: 20px; border-radius: 12px; border: 1px solid #222d34; color: #8696a0;">
+                <h2 style="color: white; margin-bottom: 10px;">Mesajlar</h2>
+                <p>Hal-hazırda aktiv söhbət yoxdur.</p>
+            </div>
+        </main>
+
+        <!-- Sağ Panel -->
+        <aside class="sidebar-right">
+            <div class="online-users-header">
+                <h3>Aktiv Söhbətlər</h3>
+            </div>
+            <ul class="online-list">
+                <li class="empty-msg">Söhbət siyahısı boşdur</li>
+            </ul>
+        </aside>
+    </div>
+{% endblock %}
