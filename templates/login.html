@@ -4,172 +4,308 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş - nexus.com</title>
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #100a06;
+            --card: rgba(34, 23, 15, 0.74);
+            --border: rgba(240, 210, 150, 0.13);
+            --text: #f5ebdd;
+            --muted: #ab9b88;
+            --accent: #d4a937;
+            --accent-2: #b8742a;
+            --danger: #ff6b6b;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-color: #0d1117;
-            background-image: radial-gradient(circle at 50% 30%, #1a2332 0%, #0d1117 70%);
-            color: #c9d1d9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0;
-        }
-        .auth-card {
-            background: rgba(16, 22, 34, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 40px 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid #21262d;
-            text-align: center;
-        }
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #ff7e5f, #feb47b);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
-        .form-control {
-            background: #0d1117 !important;
-            border: 1px solid #30363d !important;
-            color: #fff !important;
-            padding: 12px 15px 12px 45px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .form-control:focus {
-            border-color: #ff7e5f !important;
-            box-shadow: 0 0 0 0.25rem rgba(255, 126, 95, 0.25) !important;
-        }
-        .input-group-text {
-            background: transparent;
-            border: none;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            color: #8b949e;
-        }
-        .forgot-pass {
-            text-align: left;
-            color: #58a6ff;
-            font-size: 12px;
-            text-decoration: none;
-        }
-        .forgot-pass:hover {
-            text-decoration: underline;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #ff7e5f, #ff5e36);
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: opacity 0.2s;
-        }
-        .btn-login:hover {
-            opacity: 0.9;
-            color: #fff;
-        }
-        .btn-register {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 15px;
-            transition: background 0.2s;
-        }
-        .btn-register:hover {
-            background: #21262d;
-            color: #fff;
-        }
-        .divider {
-            color: #484f58;
-            font-size: 12px;
+            padding: 24px 16px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             position: relative;
+            overflow-x: hidden;
         }
-        .google-btn {
+
+        /* Arxa fon işıq dairələri */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: 0.28;
+            z-index: 0;
+            pointer-events: none;
+            animation: float 14s ease-in-out infinite alternate;
+        }
+        body::before { background: var(--accent); top: -180px; left: -140px; }
+        body::after  { background: var(--accent-2); bottom: -200px; right: -160px; animation-delay: -6s; }
+
+        @keyframes float {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(40px, 30px) scale(1.12); }
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            padding: 12px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 14px;
-            text-decoration: none;
+            max-width: 420px;
+            padding: 40px 34px 34px;
+            background: var(--card);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+            animation: rise 0.5s ease both;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            margin-bottom: 26px;
         }
-        .google-btn:hover {
-            background: #21262d;
-            color: #fff;
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: grid;
+            place-items: center;
+            box-shadow: 0 6px 18px rgba(212, 169, 55, 0.35);
+        }
+        .brand-mark svg { width: 20px; height: 20px; fill: #1a1006; }
+        .brand-name { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        .brand-name span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h1 { margin: 0 0 6px; text-align: center; font-size: 22px; font-weight: 700; }
+        .subtitle { margin: 0 0 24px; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+        /* Flash mesajlar */
+        .alert {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            border: 1px solid;
+        }
+        .alert-danger  { background: rgba(255, 107, 107, 0.1); border-color: rgba(255, 107, 107, 0.35); color: #ff9c9c; }
+        .alert-success { background: rgba(212, 169, 55, 0.1);  border-color: rgba(212, 169, 55, 0.35);  color: #f2d98a; }
+
+        .field { position: relative; margin-bottom: 14px; }
+        .field .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: var(--muted);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            pointer-events: none;
+            transition: stroke 0.2s;
+        }
+        .field input {
+            width: 100%;
+            height: 50px;
+            padding: 0 46px 0 46px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font: inherit;
+            font-size: 14.5px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .field input::placeholder { color: #7d6e5e; }
+        .field input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 0 4px rgba(212, 169, 55, 0.15);
+        }
+        .field input:focus ~ .icon { stroke: var(--accent); }
+
+        .toggle-pass {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            background: none;
+            border: 0;
+            border-radius: 10px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+        .toggle-pass:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+        .toggle-pass svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        .forgot { display: flex; justify-content: flex-end; margin: -4px 0 18px; }
+        .forgot a { color: var(--accent); font-size: 13px; text-decoration: none; }
+        .forgot a:hover { text-decoration: underline; }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            height: 50px;
+            border-radius: var(--radius);
+            font: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .btn-primary {
+            border: 0;
+            color: #1a1006;
+            background: linear-gradient(135deg, var(--accent), #f2d98a 55%, var(--accent-2));
+            box-shadow: 0 10px 24px rgba(212, 169, 55, 0.28);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 30px rgba(212, 169, 55, 0.38); }
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-ghost {
+            color: var(--text);
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.18); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: #7d6e5e;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+        .btn-google { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: var(--text); font-size: 14px; font-weight: 500; }
+        .btn-google:hover { background: rgba(255, 255, 255, 0.08); }
+        .btn-google svg { width: 18px; height: 18px; }
+
+        .spacer { height: 12px; }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 32px 22px 26px; border-radius: 18px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            body::before, body::after, .auth-card { animation: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container d-flex justify-content-center align-items: center px-3">
-        <div class="auth-card">
-            <!-- Logo -->
-            <div class="d-flex align-items: center justify-content-center gap-2 mb-3">
-                <div class="logo-icon">⚡</div>
-                <div class="fs-4 fw-bold text-white">nexus<span style="color: #ff7e5f;">.com</span></div>
+    <main class="auth-card">
+        <div class="brand">
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
             </div>
-            
-            <h2 class="text-white fs-5 mb-1">Xoş gəlmisiniz!</h2>
-            <p class="text-muted small mb-4">Sayta daxil olun və dostlarınızla əylənməyə başlayın!</p>
-            
-            <form method="POST">
-                <div class="position-relative mb-3">
-                    <span class="input-group-text">👤</span>
-                    <input type="email" name="email" class="form-control" placeholder="E-poçt ünvanı" required>
-                </div>
-                
-                <div class="position-relative mb-2">
-                    <span class="input-group-text">🔒</span>
-                    <input type="password" name="password" class="form-control" placeholder="Parol" required>
-                </div>
-                
-                <div class="d-flex justify-content-start mb-3">
-                    <a href="{{ url_for('forgot_password') }}" class="forgot-pass">Parolu unutmusunuz?</a>
-                </div>
-                
-                <button type="submit" class="btn btn-login mb-3">Giriş →</button>
-            </form>
-
-            <a href="{{ url_for('register') }}" class="btn btn-register mb-3">Qeydiyyatdan keçin</a>
-            
-            <div class="divider mb-3">və ya</div>
-            
-            <a href="#" class="google-btn">
-                <span>🌐</span> Google ilə hesabınıza giriş edin
-            </a>
+            <div class="brand-name">nexus<span>.com</span></div>
         </div>
-    </div>
 
-    <!-- Bootstrap 5 JS Bundle CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <h1>Xoş gəlmisiniz!</h1>
+        <p class="subtitle">Hesabınıza daxil olun və dostlarınızla əylənməyə başlayın.</p>
+
+        <!-- Flash mesajlar -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert {{ 'alert-success' if category == 'success' else 'alert-danger' }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" autocomplete="on">
+            <div class="field">
+                <input type="email" name="email" placeholder="E-poçt ünvanı" autocomplete="email" required>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+            </div>
+
+            <div class="field">
+                <input type="password" name="password" id="password" placeholder="Parol" autocomplete="current-password" required>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <button type="button" class="toggle-pass" id="togglePass" aria-label="Parolu göstər">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+
+            <div class="forgot">
+                <a href="{{ url_for('forgot_password') }}">Parolu unutmusunuz?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Daxil ol</button>
+        </form>
+
+        <div class="spacer"></div>
+        <a href="{{ url_for('register') }}" class="btn btn-ghost">Qeydiyyatdan keçin</a>
+
+        <div class="divider">və ya</div>
+
+        <a href="#" class="btn btn-google">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8Z"/>
+                <path fill="#34A853" d="M12 23c3 0 5.4-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1-3.7 1-2.8 0-5.2-1.9-6-4.5H2.4v2.8A11 11 0 0 0 12 23Z"/>
+                <path fill="#FBBC05" d="M6 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.4a11 11 0 0 0 0 9.8L6 14.1Z"/>
+                <path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.4 7.1L6 9.9c.8-2.6 3.2-4.5 6-4.5Z"/>
+            </svg>
+            Google ilə daxil olun
+        </a>
+    </main>
+
+    <script>
+        // Parolu göstər / gizlət
+        (function () {
+            var btn = document.getElementById('togglePass');
+            var input = document.getElementById('password');
+            btn.addEventListener('click', function () {
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                btn.setAttribute('aria-label', show ? 'Parolu gizlət' : 'Parolu göstər');
+            });
+        })();
+    </script>
 </body>
 </html>
