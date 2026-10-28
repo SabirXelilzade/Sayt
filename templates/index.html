@@ -1,212 +1,367 @@
 <!DOCTYPE html>
-<html lang="az" data-bs-theme="dark">
+<html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nexus - Ana Səhifə</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+
+    <!-- Bootstrap Icons (yalnız ikonlar üçün) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg: #1e1611;
+            --side: #251b14;
+            --surface: #2c2119;
+            --surface-2: #362a20;
+            --border: rgba(240, 210, 150, 0.14);
+            --text: #f0e5d4;
+            --muted: #b5a690;
+            --accent: #dcb04a;
+            --accent-2: #c4833b;
+            --on-accent: #2a1c0a;
+            --danger: #ff8a7a;
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(900px 500px at 15% -10%, rgba(220, 176, 74, 0.09), transparent 60%),
+                radial-gradient(800px 500px at 100% 110%, rgba(196, 131, 59, 0.09), transparent 60%);
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.5;
         }
 
-        /* Qradient Loqo və Düymələr */
-        .brand-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-decoration: none;
+        a { color: inherit; text-decoration: none; }
+
+        /* ---------- Loqo ---------- */
+        .brand { display: flex; align-items: center; gap: 9px; }
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 14px rgba(220, 176, 74, 0.28);
         }
-        .brand-logo span {
-            color: #ff7e5f;
-        }
-        
-        .btn-gradient {
-            background: linear-gradient(135deg, #ff7e5f, #ff5e36);
-            color: #ffffff;
-            border: none;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-        .btn-gradient:hover {
-            color: #ffffff;
-            opacity: 0.9;
+        .brand-mark svg { width: 18px; height: 18px; fill: var(--on-accent); }
+        .brand-name { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; }
+        .brand-name span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        /* Navigasiya keçidləri */
-        .sidebar .nav-link {
-            color: #8b949e;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: all 0.2s ease-in-out;
+        /* ---------- Sol menyu ---------- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            padding: 20px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--side);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 50;
+            transition: transform 0.25s ease;
+        }
+        .sidebar .brand { padding: 0 8px; margin-bottom: 26px; }
+
+        .nav { display: flex; flex-direction: column; gap: 3px; }
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 11px;
+            font-size: 14.5px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav a i { font-size: 17px; }
+        .nav a:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
+        .nav a.active { background: rgba(220, 176, 74, 0.16); color: var(--accent); }
+        .nav a.logout { color: var(--danger); }
+        .nav a.logout:hover { background: rgba(255, 138, 122, 0.12); color: var(--danger); }
+
+        .side-bottom { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .user-chip {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 10px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
         }
-        .sidebar .nav-link:hover, 
-        .sidebar .nav-link.active {
-            background-color: #21262d;
-            color: #ffffff;
+        .user-chip:hover { background: var(--surface-2); }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: var(--on-accent);
+            display: grid;
+            place-items: center;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .avatar.lg { width: 42px; height: 42px; font-size: 17px; }
+
+        /* ---------- Mobil üst panel və arxa fon ---------- */
+        .mobile-bar { display: none; }
+        .overlay { display: none; }
+
+        /* ---------- Əsas hissə ---------- */
+        .main { margin-left: 260px; padding: 34px 24px 80px; }
+        .container { max-width: 750px; margin: 0 auto; }
+        .welcome { margin: 0 0 22px; font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+        .welcome span { color: var(--accent); }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
-        /* Çıxış linki */
-        .logout-link {
-            color: #ff4d4d !important;
-        }
-        .logout-link:hover {
-            background-color: rgba(255, 77, 77, 0.1) !important;
-        }
-
-        /* Kartlar və Form Elementləri */
-        .custom-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
+        /* Flash mesajlar */
+        .alert {
+            padding: 12px 14px;
+            margin-bottom: 16px;
             border-radius: 12px;
+            font-size: 13.5px;
+            border: 1px solid;
         }
+        .alert-danger  { background: rgba(255, 120, 120, 0.10); border-color: rgba(255, 120, 120, 0.35); color: #ffaaaa; }
+        .alert-success { background: rgba(220, 176, 74, 0.12);  border-color: rgba(220, 176, 74, 0.35);  color: #f2dc9a; }
 
-        .custom-textarea {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #ffffff;
+        /* Paylaşım forması */
+        .composer { margin-bottom: 20px; }
+        .composer textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font: inherit;
+            font-size: 14.5px;
             resize: none;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .custom-textarea:focus {
-            background-color: #0d1117;
-            border-color: #ff7e5f;
-            box-shadow: 0 0 0 0.25rem rgba(255, 126, 95, 0.25);
-            color: #ffffff;
+        .composer textarea::placeholder { color: #8c7e6b; }
+        .composer textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(220, 176, 74, 0.14); }
+        .composer-footer { display: flex; justify-content: flex-end; margin-top: 12px; }
+
+        .btn-primary {
+            border: 0;
+            padding: 10px 26px;
+            border-radius: 12px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--on-accent);
+            background: linear-gradient(135deg, var(--accent), #f0d588 55%, var(--accent-2));
+            box-shadow: 0 6px 16px rgba(220, 176, 74, 0.22);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(220, 176, 74, 0.32); }
+
+        /* Postlar */
+        .posts { display: flex; flex-direction: column; gap: 14px; }
+        .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .post-author { font-weight: 600; font-size: 15px; color: var(--accent); }
+        .post-tag { font-size: 12px; color: var(--muted); }
+        .post-body { white-space: pre-wrap; word-break: break-word; font-size: 15px; }
+
+        .empty {
+            padding: 28px 18px;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed rgba(240, 210, 150, 0.28);
+            border-radius: var(--radius);
         }
 
-        /* Masaüstü və Mobil Konfiqurasiyaları */
-        @media (min-width: 992px) {
-            .sidebar-desktop {
-                width: 260px;
-                height: 100vh;
+        /* ---------- Mobil və planşet ---------- */
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); box-shadow: 8px 0 30px rgba(0, 0, 0, 0.45); }
+            body.menu-open .sidebar { transform: none; }
+
+            .overlay {
+                display: block;
                 position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s;
+                z-index: 40;
+            }
+            body.menu-open .overlay { opacity: 1; pointer-events: auto; }
+
+            .mobile-bar {
+                position: sticky;
                 top: 0;
-                left: 0;
-                border-right: 1px solid #30363d;
-                background-color: #161b22;
-                z-index: 1000;
+                z-index: 30;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 16px;
+                background: rgba(37, 27, 20, 0.92);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                border-bottom: 1px solid var(--border);
             }
-            .main-content {
-                margin-left: 260px;
+            .menu-btn {
+                width: 40px;
+                height: 40px;
+                display: grid;
+                place-items: center;
+                border: 1px solid var(--border);
+                border-radius: 11px;
+                background: none;
+                color: var(--text);
+                font-size: 22px;
+                cursor: pointer;
             }
+            .main { margin-left: 0; padding: 20px 14px 70px; }
+            .welcome { font-size: 20px; }
+        }
+        @media (max-width: 480px) {
+            .card { padding: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- MOBİL ÜÇÜN YUXARI NAVBAR (Yalnız kiçik ekranlarda görünür) -->
-    <nav class="navbar navbar-dark bg-dark d-lg-none border-bottom border-secondary px-3 sticky-top" style="background-color: #161b22 !important;">
-        <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
-
-    <div class="container-fluid p-0">
-        <div class="row g-0">
-
-            <!-- MASAÜSTÜ ÜÇÜN SOL MENYU (DESKTOP SIDEBAR) -->
-            <aside class="sidebar sidebar-desktop d-none d-lg-flex flex-column justify-content-between p-3">
-                <div>
-                    <div class="mb-4 ps-2">
-                        <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
-                    </div>
-                    <nav class="nav nav-pills flex-column gap-1">
-                        <a href="{{ url_for('index') }}" class="nav-link active"><i class="bi bi-house-door"></i> Ana səhifə</a>
-                        <a href="{{ url_for('maraqli') }}" class="nav-link"><i class="bi bi-compass"></i> Maraqlı</a>
-                        <a href="{{ url_for('profile') }}" class="nav-link"><i class="bi bi-person"></i> Profil</a>
-                        <a href="{{ url_for('dostlar') }}" class="nav-link"><i class="bi bi-people"></i> Dostlar</a>
-                        <a href="{{ url_for('messages') }}" class="nav-link"><i class="bi bi-chat-dots"></i> Mesajlar</a>
-                        <a href="{{ url_for('bildirisler') }}" class="nav-link"><i class="bi bi-bell"></i> Bildirişlər</a>
-                        <a href="{{ url_for('games') }}" class="nav-link"><i class="bi bi-controller"></i> Oyunlar</a>
-                        <a href="{{ url_for('ayarlar') }}" class="nav-link"><i class="bi bi-gear"></i> Ayarlar</a>
-                    </nav>
-                </div>
-                <div>
-                    <nav class="nav nav-pills flex-column">
-                        <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i> Çıxış</a>
-                    </nav>
-                </div>
-            </aside>
-
-            <!-- MOBİL ÜÇÜN AÇILAN MENYU (OFFCANVAS SIDEBAR) -->
-            <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileSidebar" style="background-color: #161b22 !important;">
-                <div class="offcanvas-header border-bottom border-secondary">
-                    <a class="brand-logo" href="{{ url_for('index') }}">nexus<span>.com</span></a>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Bağla"></button>
-                </div>
-                <div class="offcanvas-body d-flex flex-column justify-content-between sidebar">
-                    <nav class="nav nav-pills flex-column gap-1">
-                        <a href="{{ url_for('index') }}" class="nav-link active"><i class="bi bi-house-door"></i> Ana səhifə</a>
-                        <a href="{{ url_for('maraqli') }}" class="nav-link"><i class="bi bi-compass"></i> Maraqlı</a>
-                        <a href="{{ url_for('profile') }}" class="nav-link"><i class="bi bi-person"></i> Profil</a>
-                        <a href="{{ url_for('dostlar') }}" class="nav-link"><i class="bi bi-people"></i> Dostlar</a>
-                        <a href="{{ url_for('messages') }}" class="nav-link"><i class="bi bi-chat-dots"></i> Mesajlar</a>
-                        <a href="{{ url_for('bildirisler') }}" class="nav-link"><i class="bi bi-bell"></i> Bildirişlər</a>
-                        <a href="{{ url_for('games') }}" class="nav-link"><i class="bi bi-controller"></i> Oyunlar</a>
-                        <a href="{{ url_for('ayarlar') }}" class="nav-link"><i class="bi bi-gear"></i> Ayarlar</a>
-                    </nav>
-                    <div class="mt-4">
-                        <nav class="nav nav-pills flex-column">
-                            <a href="{{ url_for('logout') }}" class="nav-link logout-link"><i class="bi bi-box-arrow-right"></i> Çıxış</a>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ƏSAS MƏZMUN SAHƏSİ (MAIN CONTENT) -->
-            <main class="main-content col-12 col-lg p-3 p-md-4 p-xl-5">
-                <div class="col-12 col-xl-8 mx-auto" style="max-width: 750px;">
-                    
-                    <!-- Xoş gəlmisiniz Başlığı -->
-                    <h2 class="h4 font-weight-bold mb-4">Xoş gəlmisiniz, {{ current_user.username }}!</h2>
-
-                    <!-- Post Paylaşma Formu -->
-                    <div class="card custom-card p-3 mb-4">
-                        <form action="{{ url_for('add_post') }}" method="POST">
-                            <div class="mb-3">
-                                <textarea name="content" class="form-control custom-textarea" rows="3" placeholder="Nə düşünürsünüz?" required></textarea>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-gradient px-4">Paylaş</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Paylaşılan Postlar Lenti -->
-                    <div class="posts-feed">
-                        {% for post in posts %}
-                            <div class="card custom-card p-3 mb-3">
-                                <div class="card-body p-0">
-                                    <h6 class="card-title fw-bold mb-2" style="color: #58a6ff;">{{ post.author.username }}</h6>
-                                    <p class="card-text mb-0" style="color: #c9d1d9;">{{ post.content }}</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="p-3 text-center text-secondary border border-secondary border-dashed rounded-3" style="border-style: dashed !important;">
-                                Hələ heç bir post paylaşılmayıb. İlk paylaşımı siz edin!
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                </div>
-            </main>
-
-        </div>
+    <!-- Mobil üst panel -->
+    <div class="mobile-bar">
+        <a class="brand" href="{{ url_for('index') }}">
+            <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+            <div class="brand-name">nexus<span>.com</span></div>
+        </a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Menyunu aç"><i class="bi bi-list"></i></button>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle (Popper daxil) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sol menyu (kompüterdə sabit, telefonda açılan) -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <a class="brand" href="{{ url_for('index') }}">
+                <div class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+                <div class="brand-name">nexus<span>.com</span></div>
+            </a>
+
+            <nav class="nav">
+                <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}"><i class="bi bi-house-door"></i> Ana səhifə</a>
+                <a href="{{ url_for('maraqli') }}" class="{{ 'active' if request.endpoint == 'maraqli' else '' }}"><i class="bi bi-compass"></i> Maraqlı</a>
+                <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint == 'profile' else '' }}"><i class="bi bi-person"></i> Profil</a>
+                <a href="{{ url_for('dostlar') }}" class="{{ 'active' if request.endpoint == 'dostlar' else '' }}"><i class="bi bi-people"></i> Dostlar</a>
+                <a href="{{ url_for('messages') }}" class="{{ 'active' if request.endpoint == 'messages' else '' }}"><i class="bi bi-chat-dots"></i> Mesajlar</a>
+                <a href="{{ url_for('bildirisler') }}" class="{{ 'active' if request.endpoint == 'bildirisler' else '' }}"><i class="bi bi-bell"></i> Bildirişlər</a>
+                <a href="{{ url_for('games') }}" class="{{ 'active' if request.endpoint == 'games' else '' }}"><i class="bi bi-controller"></i> Oyunlar</a>
+                <a href="{{ url_for('ayarlar') }}" class="{{ 'active' if request.endpoint == 'ayarlar' else '' }}"><i class="bi bi-gear"></i> Ayarlar</a>
+                {% if current_user.username == 'sabir' %}
+                    <a href="{{ url_for('admin') }}" class="{{ 'active' if request.endpoint == 'admin' else '' }}"><i class="bi bi-shield-lock"></i> Admin</a>
+                {% endif %}
+            </nav>
+        </div>
+
+        <div class="side-bottom">
+            <a class="user-chip" href="{{ url_for('profile') }}">
+                <div class="avatar">{{ current_user.username[0]|upper }}</div>
+                <span>{{ current_user.username }}</span>
+            </a>
+            <nav class="nav">
+                <a href="{{ url_for('logout') }}" class="logout"><i class="bi bi-box-arrow-right"></i> Çıxış</a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Əsas məzmun -->
+    <main class="main">
+        <div class="container">
+
+            <h2 class="welcome">Xoş gəlmisiniz, <span>{{ current_user.username }}</span>!</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert {{ 'alert-success' if category == 'success' else 'alert-danger' }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <!-- Paylaşım formu -->
+            <div class="card composer">
+                <form action="{{ url_for('add_post') }}" method="POST">
+                    <textarea name="content" rows="3" placeholder="Nə düşünürsünüz?" required></textarea>
+                    <div class="composer-footer">
+                        <button type="submit" class="btn-primary">Paylaş</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Paylaşılan postlar (ən yenisi yuxarıda) -->
+            <div class="posts">
+                {% for post in posts|reverse %}
+                    <article class="card">
+                        <div class="post-head">
+                            <div class="avatar lg">{{ post.author.username[0]|upper }}</div>
+                            <div>
+                                <div class="post-author">{{ post.author.username }}</div>
+                                <div class="post-tag">nexus istifadəçisi</div>
+                            </div>
+                        </div>
+                        <div class="post-body">{{ post.content }}</div>
+                    </article>
+                {% else %}
+                    <div class="empty">Hələ heç bir post paylaşılmayıb. İlk paylaşımı siz edin!</div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Mobil menyunu aç / bağla
+        (function () {
+            var body = document.body;
+            document.getElementById('menuBtn').addEventListener('click', function () {
+                body.classList.toggle('menu-open');
+            });
+            document.getElementById('overlay').addEventListener('click', function () {
+                body.classList.remove('menu-open');
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') body.classList.remove('menu-open');
+            });
+        })();
+    </script>
 </body>
 </html>
